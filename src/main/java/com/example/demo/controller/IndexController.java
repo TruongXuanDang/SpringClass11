@@ -24,6 +24,7 @@ public class IndexController {
         List<User> lsUser = userService.getAll();
         System.out.println("Size: "+lsUser.size());
         model.addAttribute("hello","truong");
+        model.addAttribute("lsUser",lsUser);
         return "hello";
     }
 }

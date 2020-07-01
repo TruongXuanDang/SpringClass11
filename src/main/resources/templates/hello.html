@@ -1,12 +1,49 @@
 <!DOCTYPE html>
 <html lang="en"
-xmlns:th="http://www.springframework.org/schema/data/jaxb">
+      xmlns:th="http://www.springframework.org/schema/data/jaxb">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Success</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 50%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
 </head>
 <body>
-    Hellos
-    <span th:text="${hello}"></span>
+<h1>List Product</h1>
+Hellos
+<span th:text="${hello}"></span>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Pass</th>
+        <th>Phone</th>
+    </tr>
+
+    <tr th:if="${lsUser.empty}">
+        <td colspan="2"> No Books Available </td>
+    </tr>
+    <tr th:each="user : ${lsUser}">
+        <td><span th:text="${user.id}"> ID </span></td>
+        <td><span th:text="${user.username}"> Name </span></td>
+        <td><span th:text="${user.password}"> Pass </span></td>
+        <td><span th:text="${user.phone}"> Phone </span></td>
+    </tr>
+
+</table>
+
 </body>
 </html>
