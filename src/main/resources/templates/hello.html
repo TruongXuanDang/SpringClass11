@@ -32,6 +32,7 @@ Hellos
         <th>Name</th>
         <th>Pass</th>
         <th>Phone</th>
+        <th>Action</th>
     </tr>
 
     <tr th:if="${lsUser.empty}">
@@ -42,6 +43,9 @@ Hellos
         <td><span th:text="${user.username}"> Name </span></td>
         <td><span th:text="${user.password}"> Pass </span></td>
         <td><span th:text="${user.phone}"> Phone </span></td>
+        <td>
+            <a th:href="@{/edit?id={id}(id=${user.id})}" >Edit</a>
+        </td>
     </tr>
 
 </table>

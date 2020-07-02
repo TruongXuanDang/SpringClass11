@@ -11,8 +11,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class IndexController {
@@ -41,6 +43,25 @@ public class IndexController {
 
     @RequestMapping(value = "save",method = RequestMethod.POST)
     public String save(@Validated @ModelAttribute("user") User user, BindingResult bindingResult){
+        new UserValidator().validate(user,bindingResult);
+        if(bindingResult.hasErrors()){
+            return "addUser";
+        }
+        else {
+            userService.saveUser(user);
+            return "redirect:/hello";
+        }
+    }
+
+    @RequestMapping("/edit")
+    public String editUser(@RequestParam("id") int userId, Model model){
+        Optional<User> userEdit = userService.findUserById(userId);
+        userEdit.ifPresent(user->model.addAttribute("user",user));
+        return "editUser";
+    }
+
+    @RequestMapping(value = "update",method = RequestMethod.POST)
+    public String update (@Validated @ModelAttribute("user") User user, BindingResult bindingResult){
         new UserValidator().validate(user,bindingResult);
         if(bindingResult.hasErrors()){
             return "addUser";
