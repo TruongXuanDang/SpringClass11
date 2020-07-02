@@ -3,6 +3,7 @@ package com.example.demo.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "user")
@@ -15,6 +16,8 @@ public class User {
     private Integer id;
 
     @Column(name = "username")
+    @NotNull
+    @Size(min=2,max=100)
     private String username;
 
     @Column(name = "password")

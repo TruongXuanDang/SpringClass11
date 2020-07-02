@@ -5,7 +5,11 @@ import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
@@ -26,5 +30,22 @@ public class IndexController {
         model.addAttribute("hello","truong");
         model.addAttribute("lsUser",lsUser);
         return "hello";
+    }
+
+    @RequestMapping("/add")
+    public String addUser(Model model){
+        model.addAttribute("user",new User());
+        return "addUser";
+    }
+
+    @RequestMapping(value = "save",method = RequestMethod.POST)
+    public String save(@Validated @ModelAttribute("user") User user, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "addUser";
+        }
+        else {
+            userService.saveUser(user);
+            return "redirect:/hello";
+        }
     }
 }

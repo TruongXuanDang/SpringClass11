@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+
+
+<html lang="en"
+      xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head>
+    <title>Add User</title>
+</head>
+<body>
+
+<form th:object="${user}" th:action="@{save}" action="#" th:method="post">
+    <label th:text="username" th:for="username"/>
+    <input th:field="*{username}" type="text"/>
+    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</span>
+    <br/>
+    <label th:text="password" th:for="password"/>
+    <input th:field="*{password}" type="text"/><br/>
+    <label th:text="phone" th:for="phone"/>
+    <input th:field="*{phone}" type="text"/><br/>
+    <input type="submit" value="Save" />
+</form>
+
+</body>
+</html>
