@@ -45,6 +45,7 @@ Hellos
         <td><span th:text="${user.phone}"> Phone </span></td>
         <td>
             <a th:href="@{/edit?id={id}(id=${user.id})}" >Edit</a>
+            <a th:href="@{/delete?id={id}(id=${user.id})}" >Delete</a>
         </td>
     </tr>
 

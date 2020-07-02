@@ -71,4 +71,10 @@ public class IndexController {
             return "redirect:/hello";
         }
     }
+
+    @RequestMapping("/delete")
+    public String deleteUser(@RequestParam("id") int userId, Model model){
+        userService.deleteUser(userId);
+        return "redirect:/hello";
+    }
 }
