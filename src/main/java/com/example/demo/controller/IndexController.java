@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.User;
+import com.example.demo.entity.UserValidator;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,7 @@ public class IndexController {
 
     @RequestMapping(value = "save",method = RequestMethod.POST)
     public String save(@Validated @ModelAttribute("user") User user, BindingResult bindingResult){
+        new UserValidator().validate(user,bindingResult);
         if(bindingResult.hasErrors()){
             return "addUser";
         }
