@@ -18,6 +18,15 @@
     <input th:field="*{password}" type="text"/><br/>
     <label th:text="phone" th:for="phone"/>
     <input th:field="*{phone}" type="text"/><br/>
+
+    <ul>
+        <li th:each="role:${lsRole}">
+            <input type="checkbox" th:field="*{roles}"
+                   th:value="${role.id}"/>
+            <label th:text="${role.name}" />
+        </li>
+    </ul>
+
     <input type="submit" value="Save" />
 </form>
 

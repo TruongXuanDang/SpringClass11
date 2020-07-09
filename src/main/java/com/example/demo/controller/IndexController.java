@@ -1,25 +1,38 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.UserDTO;
+import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
 import com.example.demo.entity.UserValidator;
+import com.example.demo.service.RoleService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class IndexController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @RequestMapping("/")
     public String index(){
@@ -38,16 +51,32 @@ public class IndexController {
     @RequestMapping("/add")
     public String addUser(Model model){
         model.addAttribute("user",new User());
+        List<Role> lsRole = roleService.getAll();
+        model.addAttribute("lsRole",lsRole);
         return "addUser";
     }
 
     @RequestMapping(value = "save",method = RequestMethod.POST)
-    public String save(@Validated @ModelAttribute("user") User user, BindingResult bindingResult){
-        new UserValidator().validate(user,bindingResult);
+    public String save(@Validated @ModelAttribute("user") UserDTO userDTO, BindingResult bindingResult, Model model){
+
+
         if(bindingResult.hasErrors()){
+            List<Role> lsRole = roleService.getAll();
+            model.addAttribute("lsRole",lsRole);
             return "addUser";
         }
         else {
+            String[] roles = userDTO.getRoles();
+            Set<Role> _roles = new HashSet<>();
+            for(String r:roles){
+                Role role = roleService.findRoleById(Integer.parseInt(r));
+                _roles.add(role);
+            }
+            User user = new User();
+            user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+            user.setPhone(userDTO.getPhone());
+            user.setRoles(_roles);
+            user.setUsername(userDTO.getUsername());
             userService.saveUser(user);
             return "redirect:/hello";
         }
